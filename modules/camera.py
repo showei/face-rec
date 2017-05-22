@@ -20,7 +20,7 @@ class VideoCamera(object):
             if (not rval):
                 print("Failed to open webcam. Trying again...")
 
-        image = self.face_detector.draw_faces(image)
+        image, names = self.face_detector.draw_faces(image)
 
         ret, jpeg = cv2.imencode('.jpg', image)
-        return jpeg.tobytes()
+        return jpeg.tobytes(), names

@@ -19,8 +19,7 @@ class FaceRecognizer(object):
     def identify_face(self, face):
         face_resize = cv2.resize(face, (299, 299))
         prediction = self.model.predict(face_resize)
-        print(prediction[1])
-        if prediction[1] < 2000:
+        if prediction[1] < 1900:
             return self.names[prediction[0]]
         else:
             return None

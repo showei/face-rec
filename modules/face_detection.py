@@ -15,12 +15,14 @@ class FaceDetector(object):
     def draw_faces(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = self.get_faces(gray)
+        names = []
         for face_co in faces:
             (x, y, w, h) = [v for v in face_co]
             face = gray[y:y + h, x:x + w]
             name = self.face_identifier(face)
             if name:
+                names.append(name)
                 cv2.putText(img, '%s' % name,
                             (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 3)
-        return img
+        return img, names

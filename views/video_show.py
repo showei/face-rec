@@ -1,4 +1,4 @@
-from flask import render_template, Response, Blueprint
+from flask import render_template, Response, Blueprint, redirect
 
 from modules.camera import VideoCamera
 
@@ -12,9 +12,14 @@ def home():
 
 def gen(camera):
     while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        frame, names = camera.get_frame()
+        if not len(names):
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        else:
+            print(names)
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
 @blueprint.route('/video_feed')
